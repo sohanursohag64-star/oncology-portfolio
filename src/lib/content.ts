@@ -19,11 +19,13 @@ export const doctor = {
   /** Real hospital / chamber name. */
   affiliation: "SMSS Cancer Centre",
   /** Path under /public, e.g. "/doctor.jpg" (portrait, ~4:5). null → illustrated placeholder. */
-  portrait: "/doctor.webp" as string | null,
-  phone: "[ফোন নম্বর]",
-  email: "[ইমেইল]",
+  portrait: "/doctor-coat.webp" as string | null,
+  phone: "01770-951986",
+  /** International format for tel: links. */
+  phoneHref: "tel:+8801770951986",
+  email: "sohanurnil24@gmail.com",
   address: "বগুড়া",
-  hours: "[সাক্ষাতের সময়]",
+  hours: "শনি – বুধবার, বিকেল ৪টা – রাত ৯টা",
 };
 
 export const nav = [

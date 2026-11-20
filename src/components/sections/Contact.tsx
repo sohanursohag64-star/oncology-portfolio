@@ -4,10 +4,10 @@ import { Kicker, Reveal, RevealItem } from "../ui/Reveal";
 
 export function Contact() {
   const rows = [
-    { icon: Phone, label: "ফোন", value: doctor.phone },
-    { icon: Mail, label: "ইমেইল", value: doctor.email },
+    { icon: Phone, label: "মোবাইল", value: doctor.phone, href: doctor.phoneHref, en: true },
+    { icon: Mail, label: "ইমেইল", value: doctor.email, href: `mailto:${doctor.email}`, en: true },
     { icon: MapPin, label: "চেম্বার", value: `${doctor.affiliation}, ${doctor.address}` },
-    { icon: Clock, label: "সময়", value: doctor.hours },
+    { icon: Clock, label: "সাক্ষাতের সময়", value: doctor.hours },
   ];
   return (
     <section id="contact" className="relative px-4 pb-16 pt-12 md:px-8 md:pb-24">
@@ -26,7 +26,7 @@ export function Contact() {
             </RevealItem>
             <RevealItem className="mt-8">
               <a
-                href={`tel:${doctor.phone}`}
+                href={doctor.phoneHref}
                 className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-[15px] font-semibold text-white shadow-soft transition hover:bg-primary-deep"
               >
                 <Phone className="h-4.5 w-4.5" /> অ্যাপয়েন্টমেন্টের জন্য কল করুন
@@ -35,13 +35,21 @@ export function Contact() {
           </Reveal>
 
           <Reveal stagger={0.08} className="grid gap-3 sm:grid-cols-2 lg:col-span-6 lg:self-center">
-            {rows.map(({ icon: Icon, label, value }) => (
-              <RevealItem key={label} className="glass rounded-3xl p-5">
+            {rows.map(({ icon: Icon, label, value, href, en }) => (
+              <RevealItem key={label} className="glass relative rounded-3xl p-5">
                 <span className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-primary">
                   <Icon className="h-4.5 w-4.5" />
                 </span>
                 <p className="mt-4 text-xs text-ink-soft">{label}</p>
-                <p className="mt-1 font-semibold leading-snug text-ink">{value}</p>
+                <p className={`mt-1 break-words font-semibold leading-snug text-ink ${en ? "font-en" : ""}`}>
+                  {href ? (
+                    <a href={href} className="after:absolute after:inset-0 hover:text-primary">
+                      {value}
+                    </a>
+                  ) : (
+                    value
+                  )}
+                </p>
               </RevealItem>
             ))}
           </Reveal>

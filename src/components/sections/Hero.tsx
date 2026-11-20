@@ -78,7 +78,7 @@ export function Hero() {
                 fill
                 priority
                 sizes="(min-width: 1024px) 34vw, 78vw"
-                className="object-contain object-bottom drop-shadow-[0_30px_40px_rgba(24,59,82,0.18)]"
+                className="object-contain object-bottom drop-shadow-[0_18px_30px_rgba(24,59,82,0.26)]"
               />
             </motion.div>
           </motion.div>

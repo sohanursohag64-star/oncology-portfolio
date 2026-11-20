@@ -15,7 +15,7 @@ npm run build && npm start
 All copy lives in `src/lib/content.ts`. **No qualifications, affiliations, publications or clinical claims were invented.** Every `[...]` value is a placeholder:
 
 - `doctor`: name, degrees, affiliation, phone, email, address and hours
-- `doctor.portrait`: currently `/doctor.webp`, a background-removed cut-out shown in the hero. A professional studio photo (plain background, white coat, shoulders up) would look even better; replace the file and keep the same name.
+- `doctor.portrait`: currently `/doctor-coat.webp`, a background-removed cut-out with a white coat composited over the shirt, shown in the hero. A professional studio photo (plain background, white coat, shoulders up) would look even better; replace the file and keep the same name.
 - `about.body[0]`, `about.facts`, `about.quote`
 - `publications`: real title, journal, year and `href` (DOI). Remove `placeholder: true` once an entry is real.
 - `expertise`: these describe the *field* of Medical Oncology for patients. Confirm the list matches the doctor's practice.
