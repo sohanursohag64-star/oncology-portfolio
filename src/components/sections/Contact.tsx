@@ -11,7 +11,7 @@ export function Contact() {
   ];
   return (
     <section id="contact" className="relative px-4 pb-16 pt-12 md:px-8 md:pb-24">
-      <div className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[var(--radius-panel)] bg-gradient-to-br from-secondary via-white to-[#eaf7fc] shadow-float">
+      <div className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[var(--radius-panel)] border border-white/80 bg-[linear-gradient(180deg,#b5dbf2_0%,#dcf0fa_55%,#eef8fd_100%)] shadow-float">
         <div className="pointer-events-none absolute -bottom-40 -left-24 h-[440px] w-[440px] rounded-full bg-accent/25 blur-3xl" />
         <div className="relative grid gap-12 px-6 py-14 sm:px-10 lg:grid-cols-12 lg:px-14 lg:py-20">
           <Reveal className="lg:col-span-6">
@@ -27,7 +27,7 @@ export function Contact() {
             <RevealItem className="mt-8">
               <a
                 href={`tel:${doctor.phone}`}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-[15px] font-semibold text-white shadow-soft transition hover:bg-primary-deep"
+                className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-[15px] font-semibold text-white shadow-soft transition hover:bg-primary-deep"
               >
                 <Phone className="h-4.5 w-4.5" /> অ্যাপয়েন্টমেন্টের জন্য কল করুন
               </a>

@@ -19,7 +19,7 @@ export const doctor = {
   /** Real hospital / chamber name. */
   affiliation: "[হাসপাতাল / চেম্বারের নাম]",
   /** Path under /public, e.g. "/doctor.jpg" (portrait, ~4:5). null → illustrated placeholder. */
-  portrait: null as string | null,
+  portrait: "/doctor.webp" as string | null,
   phone: "[ফোন নম্বর]",
   email: "[ইমেইল]",
   address: "[চেম্বারের ঠিকানা]",
@@ -41,6 +41,11 @@ export const hero = {
     "প্রতিটি রোগীর রোগ, শরীর ও জীবন আলাদা। আধুনিক গবেষণালব্ধ প্রমাণ আর ব্যক্তিগত মনোযোগ মিলিয়ে তৈরি হোক আপনার চিকিৎসা পরিকল্পনা।",
   primaryCta: "অ্যাপয়েন্টমেন্ট নিন",
   secondaryCta: "চিকিৎসা পদ্ধতি দেখুন",
+  /** Care principle shown on the floating glass card (a philosophy, not a claim). */
+  principle: {
+    title: "ব্যক্তিগত চিকিৎসা পরিকল্পনা",
+    text: "রোগের ধরন, Biomarker ও আপনার জীবনযাত্রা বিবেচনা করে তৈরি পরিকল্পনা।",
+  },
   /** Patient-education teaser card (no clinical claims). */
   card: {
     kicker: "রোগী শিক্ষা",

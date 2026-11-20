@@ -53,7 +53,7 @@ export function LazyScene<P extends object>({ scene: Scene, sceneProps, fallback
   const use3D = near && (tier === "high" || tier === "low");
 
   return (
-    <div ref={ref} className={`relative ${className ?? ""}`} aria-hidden="true">
+    <div ref={ref} className={/\b(absolute|fixed)\b/.test(className ?? "") ? className : `relative ${className ?? ""}`} aria-hidden="true">
       <div
         className="absolute inset-0 transition-opacity duration-700"
         style={{ opacity: use3D && ready ? 0 : 1 }}

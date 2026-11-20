@@ -15,7 +15,7 @@ npm run build && npm start
 All copy lives in `src/lib/content.ts`. **No qualifications, affiliations, publications or clinical claims were invented.** Every `[...]` value is a placeholder:
 
 - `doctor`: name, degrees, affiliation, phone, email, address and hours
-- `doctor.portrait`: put a portrait (about 4:5) in `/public` and set the path, e.g. `"/doctor.jpg"`. Until then an illustrated silhouette is shown.
+- `doctor.portrait`: currently `/doctor.webp`, a background-removed cut-out shown in the hero. A professional studio photo (plain background, white coat, shoulders up) would look even better; replace the file and keep the same name.
 - `about.body[0]`, `about.facts`, `about.quote`
 - `publications`: real title, journal, year and `href` (DOI). Remove `placeholder: true` once an entry is real.
 - `expertise`: these describe the *field* of Medical Oncology for patients. Confirm the list matches the doctor's practice.
@@ -50,7 +50,7 @@ Tokens (`src/app/globals.css`): primary `#2788B9`, secondary `#DFF4FC`, canvas `
 
 | Where | Technique | Restraint |
 |---|---|---|
-| Hero molecule | Instanced ball-and-stick network + particle shell + proximity lines; slow Y rotation; eased pointer follow (window-level, so it never blocks clicks) | ~0.09 rad/s; sits behind the portrait and to the right of the headline |
+| Hero | Full-bleed sky scene: transmission + iridescent glass DNA (B-form proportions), mirrored reflection under a water veil, ripples, glossy molecule; camera parallax toward the pointer; doctor cut-out standing in the scene | Helix turns ~0.16 rad/s; copy side has a readability veil |
 | Portrait | 3 layers (organic blob / arch portrait / orbit ring) with different pointer + scroll parallax; arch clip-path entrance | Springs with low stiffness; off on touch devices |
 | About | Transmission glass torus, icosahedron, capsule and rounded box floating with `Float`; small scroll-linked turn | Opacity 80%, kept behind and below the title |
 | Expertise | One canvas, 4 models: B-DNA (right-handed, ~10.5 bp/turn, major/minor grooves), generic small molecule, IgG antibody (12 Ig domains, heavy and light chains), cell cross-section | Drag-to-rotate with snap back; every model carries a "simplified model" caption |

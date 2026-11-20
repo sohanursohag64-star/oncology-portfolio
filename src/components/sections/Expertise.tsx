@@ -45,7 +45,7 @@ export function Expertise() {
                   aria-controls="expertise-panel"
                   onClick={() => setIndex(i)}
                   className={`group relative flex min-w-[220px] items-center gap-4 rounded-3xl border px-5 py-4 text-left transition-all duration-500 lg:min-w-0 ${
-                    on ? "border-white bg-white shadow-float" : "border-transparent hover:bg-white/60"
+                    on ? "glass border-white" : "border-transparent hover:bg-white/50"
                   }`}
                 >
                   <span className={`font-en text-sm font-semibold tabular-nums ${on ? "text-primary" : "text-ink-soft/60"}`}>0{i + 1}</span>
@@ -61,7 +61,7 @@ export function Expertise() {
 
           {/* viewer + overlapping detail card */}
           <div id="expertise-panel" role="tabpanel" className="relative lg:col-span-8">
-            <div className="relative overflow-hidden rounded-[var(--radius-panel)] bg-gradient-to-br from-secondary via-[#e9f8fd] to-white">
+            <div className="relative overflow-hidden rounded-[var(--radius-panel)] border border-white/80 bg-[linear-gradient(180deg,#bfe1f3_0%,#e2f3fb_55%,#d3ebf7_56%,#eaf7fd_100%)] shadow-float">
               <div className="grain pointer-events-none absolute inset-0 opacity-50" />
               <div className="relative aspect-[4/3.4] sm:aspect-[16/11] lg:aspect-[16/12] lg:w-[78%]">
                 <LazyScene

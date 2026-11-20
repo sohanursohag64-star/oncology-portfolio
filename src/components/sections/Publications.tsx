@@ -146,7 +146,7 @@ export function Publications() {
   const empty = publications.every((p) => p.placeholder);
 
   return (
-    <section id="publications" className="relative overflow-hidden px-4 py-24 md:px-8 md:py-32">
+    <section id="publications" className="sky-band relative overflow-hidden px-4 py-24 md:px-8 md:py-32">
       <div className="pointer-events-none absolute inset-x-0 top-1/3 h-[420px] bg-gradient-to-b from-secondary/0 via-secondary/70 to-secondary/0" />
       <div className="relative mx-auto max-w-[1360px]">
         <Reveal className="grid gap-6 lg:grid-cols-12 lg:items-end">

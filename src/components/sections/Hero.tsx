@@ -1,49 +1,113 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowDown, ArrowUpRight, CalendarDays } from "lucide-react";
+import Image from "next/image";
+import { useEffect } from "react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { ArrowDown, CalendarDays, Sparkles } from "lucide-react";
 import { doctor, hero } from "@/lib/content";
 import { LazyScene } from "../three/LazyScene";
-import { HeroMoleculeScene } from "../three/scenes";
-import { MoleculeArt } from "../three/StaticArt";
-import { Portrait } from "../Portrait";
+import { HeroGlassScene } from "../three/scenes";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/** CSS twin of the WebGL sky, shown before 3D loads and on static-tier devices. */
+function SkyFallback() {
+  return (
+    <div className="absolute inset-0 bg-[linear-gradient(180deg,#b5dbf2_0%,#d9effa_38%,#eef8fd_62%,#d6edf8_64%,#e3f3fb_100%)]">
+      <svg className="absolute inset-x-0 top-[50%] h-[16%] w-full" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path d="M0 70 C120 20 220 40 330 55 S560 10 700 45 S900 30 1000 50 V100 H0Z" fill="#dcedf7" />
+        <path d="M0 85 C160 60 300 80 450 70 S760 55 1000 75 V100 H0Z" fill="#cfe6f4" />
+      </svg>
+      <svg className="absolute left-[50%] top-[10%] h-[62%] -translate-x-1/2 opacity-80" viewBox="0 0 200 400">
+        {Array.from({ length: 21 }, (_, i) => {
+          const y = 10 + i * 18;
+          const t = (i / 10.5) * Math.PI * 2;
+          return (
+            <g key={i}>
+              <line x1={100 + Math.sin(t) * 60} y1={y} x2={100 + Math.sin(t + 2.6) * 60} y2={y} stroke="#ffffff" strokeOpacity="0.7" strokeWidth="5" />
+              <circle cx={100 + Math.sin(t) * 60} cy={y} r="9" fill="#ffffff" fillOpacity="0.75" stroke="#9fd3ec" />
+              <circle cx={100 + Math.sin(t + 2.6) * 60} cy={y} r="9" fill="#e7f6fc" fillOpacity="0.75" stroke="#9fd3ec" />
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
-  const textY = useTransform(scrollY, [0, 700], [0, -40]);
-  const cardY = useTransform(scrollY, [0, 700], [0, -90]);
-  const sceneY = useTransform(scrollY, [0, 700], [0, 50]);
+  const contentY = useTransform(scrollY, [0, 800], [0, -60]);
+  const portraitY = useTransform(scrollY, [0, 800], [0, 50]);
+
+  // subtle pointer depth for the portrait (disabled on touch / reduced motion)
+  const px = useMotionValue(0);
+  const sx = useSpring(px, { stiffness: 50, damping: 18 });
+  const portraitX = useTransform(sx, (v) => v * 14);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
+    const onMove = (e: PointerEvent) => px.set(e.clientX / window.innerWidth - 0.5);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [px]);
 
   return (
-    <section id="top" ref={ref} className="relative px-3 pt-20 md:px-8 md:pt-24">
-      <div className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[var(--radius-panel)] border border-white bg-gradient-to-br from-white via-[#f2fbfe] to-secondary shadow-float">
-        <div className="grain pointer-events-none absolute inset-0 opacity-60" />
-        <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-accent/20 blur-3xl" />
+    <section id="top" className="relative p-2 sm:p-3">
+      <div className="relative mx-auto flex min-h-[100svh] max-w-[1600px] flex-col overflow-hidden rounded-[2rem] border border-white/80 shadow-float sm:rounded-[2.5rem] lg:block lg:h-[max(700px,min(100svh,980px))] lg:min-h-0">
+        {/* 3D sky, glass helix, water */}
+        <LazyScene scene={HeroGlassScene} fallback={<SkyFallback />} preload="0px" className="absolute inset-0" />
+        {/* readability veil on the copy side */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgb(248_252_254/0.78)_0%,rgb(248_252_254/0.35)_34%,transparent_52%)] max-lg:bg-[linear-gradient(180deg,rgb(248_252_254/0.85)_0%,rgb(248_252_254/0.4)_40%,transparent_58%)]" />
 
-        <div className="relative grid gap-6 px-6 pb-10 pt-12 sm:px-10 lg:grid-cols-12 lg:gap-0 lg:px-14 lg:pb-16 lg:pt-16">
-          {/* ---- editorial copy ---- */}
-          <motion.div style={{ y: textY }} className="relative z-20 lg:col-span-6 lg:pt-6">
-            <motion.p
+        {/* portrait: cut-out, standing in the scene */}
+        {doctor.portrait && (
+          <motion.div
+            style={{ x: portraitX, y: portraitY }}
+            className="pointer-events-none relative order-2 mx-auto mt-6 w-[84%] max-w-[420px] lg:absolute lg:bottom-0 lg:right-[5%] lg:mx-0 lg:mt-0 lg:w-[34%] lg:max-w-[520px]"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 80, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.5, delay: 0.35, ease }}
+              className="relative aspect-[960/1243] [mask-composite:intersect] [mask-image:linear-gradient(to_left,transparent,black_16%),linear-gradient(to_top,transparent,black_20%)] [-webkit-mask-composite:source-in]"
+            >
+              <div className="absolute inset-x-[8%] bottom-0 top-[12%] rounded-t-full bg-[radial-gradient(closest-side,rgb(255_255_255/0.75),transparent)] blur-2xl" />
+              <Image
+                src={doctor.portrait}
+                alt={doctor.name}
+                fill
+                priority
+                sizes="(min-width: 1024px) 34vw, 78vw"
+                className="object-contain object-bottom drop-shadow-[0_30px_40px_rgba(24,59,82,0.18)]"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* copy */}
+        <motion.div style={{ y: contentY }} className="relative z-10 order-1 flex flex-col px-6 pt-28 sm:px-12 lg:h-full lg:justify-center lg:px-16 lg:pt-10 xl:px-24">
+          <div className="max-w-[640px]">
+            <motion.span
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease }}
-              className="font-en text-sm font-medium uppercase tracking-[0.22em] text-primary"
+              className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-ink"
             >
-              {hero.eyebrow}
-            </motion.p>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70 motion-reduce:animate-none" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              <span className="font-en">{hero.eyebrow}</span>
+            </motion.span>
 
-            <h1 className="display-bn mt-5 text-[clamp(2.5rem,6.2vw,5.4rem)] text-ink">
+            <h1 className="display-bn mt-6 text-[clamp(2.6rem,6.4vw,5.9rem)] text-ink">
               {hero.titleLines.map((line, i) => (
-                <span key={i} className="block overflow-hidden pb-[0.08em]">
+                <span key={i} className="block overflow-hidden pb-[0.1em]">
                   <motion.span
-                    className={`block ${i === 2 ? "text-primary" : ""}`}
-                    initial={{ y: "105%" }}
+                    className={`block ${i === 2 ? "bg-gradient-to-r from-primary via-[#3aa0d0] to-accent bg-clip-text text-transparent" : ""}`}
+                    initial={{ y: "110%" }}
                     animate={{ y: 0 }}
-                    transition={{ duration: 1.1, delay: 0.15 + i * 0.12, ease }}
+                    transition={{ duration: 1.2, delay: 0.2 + i * 0.12, ease }}
                   >
                     {line}
                   </motion.span>
@@ -54,8 +118,8 @@ export function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.6, ease }}
-              className="mt-6 max-w-[34rem] text-[17px] leading-[1.85] text-ink-soft md:text-lg"
+              transition={{ duration: 1, delay: 0.65, ease }}
+              className="mt-5 max-w-[30rem] text-[16px] leading-[1.85] text-ink-soft md:text-[18px]"
             >
               {hero.lede}
             </motion.p>
@@ -63,81 +127,51 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.75, ease }}
+              transition={{ duration: 1, delay: 0.8, ease }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <a
-                href="#contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[15px] font-semibold text-white shadow-soft transition hover:bg-primary-deep"
-              >
+              <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-medium text-white shadow-soft transition hover:bg-primary-deep">
                 <CalendarDays className="h-4.5 w-4.5" />
                 {hero.primaryCta}
               </a>
-              <a
-                href="#approach"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-6 py-3.5 text-[15px] font-medium text-ink transition hover:border-primary/40"
-              >
+              <a href="#approach" className="glass inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-medium text-ink transition hover:bg-white">
                 {hero.secondaryCta}
                 <ArrowDown className="h-4 w-4" />
               </a>
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className="mt-10 flex items-center gap-4 border-t border-line/80 pt-6"
-            >
-              <div>
-                <p className="text-lg font-semibold text-ink">{doctor.name}</p>
-                <p className="text-sm text-ink-soft">
-                  <span className="font-en">{doctor.title}</span> · {doctor.degrees}
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* ---- layered visual: molecule behind portrait, floating cards in front ---- */}
-          <div className="relative z-10 mx-auto w-full max-w-[520px] lg:col-span-6 lg:max-w-none">
-            <div className="relative mx-auto h-[500px] sm:h-[540px] lg:h-[600px]">
-              <motion.div style={{ y: sceneY }} className="absolute inset-[-12%] lg:inset-[-6%_-8%_-6%_-6%]">
-                <LazyScene scene={HeroMoleculeScene} fallback={<MoleculeArt className="opacity-70" />} preload="0px" className="h-full w-full" />
-              </motion.div>
-
-              <div className="absolute left-1/2 top-[2%] w-[68%] max-w-[360px] -translate-x-1/2 lg:left-[52%] lg:top-[6%] lg:w-[62%]">
-                <Portrait scrollY={scrollY} />
-              </div>
-
-              {/* specialty chip */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.9, delay: 1.0, ease }}
-                className="glass absolute left-0 top-[44%] z-20 rounded-2xl px-4 py-3 lg:left-[2%] lg:top-[18%]"
-              >
-                <p className="font-en text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Specialty</p>
-                <p className="font-en mt-0.5 text-[15px] font-semibold text-ink">Medical Oncology</p>
-              </motion.div>
-
-              {/* patient-education card, overlapping the portrait like the reference */}
-              <motion.a
-                href="#approach"
-                style={{ y: cardY }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.15, ease }}
-                className="glass group absolute bottom-0 right-0 z-20 w-[min(270px,66%)] rounded-3xl p-4 sm:p-5 lg:bottom-[8%] lg:right-[-2%]"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-primary">{hero.card.kicker}</span>
-                  <ArrowUpRight className="h-5 w-5 text-primary transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </div>
-                <p className="mt-3 text-[15px] font-semibold leading-snug text-ink sm:text-[16px]">{hero.card.title}</p>
-                <p className="mt-2 text-xs text-ink-soft">{hero.card.meta}</p>
-              </motion.a>
-            </div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* floating glass cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 1.1, ease }}
+          className="glass absolute bottom-8 right-[calc(340px+4.5rem)] z-20 hidden w-[260px] rounded-3xl p-5 xl:block"
+        >
+          <span className="grid h-9 w-9 place-items-center rounded-2xl bg-gradient-to-br from-accent to-primary text-white">
+            <Sparkles className="h-4 w-4" />
+          </span>
+          <p className="mt-3 text-[16px] font-semibold text-ink">{hero.principle.title}</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">{hero.principle.text}</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 1.25, ease }}
+          className="glass absolute bottom-4 left-4 right-4 z-20 flex items-center gap-4 rounded-3xl px-5 py-4 sm:left-auto sm:right-6 sm:w-[340px] lg:bottom-8 lg:right-10"
+        >
+          <div className="min-w-0">
+            <p className="truncate text-[17px] font-semibold text-ink">{doctor.name}</p>
+            <p className="truncate text-[13px] text-ink-soft">
+              <span className="font-en">{doctor.title}</span> · {doctor.degrees}
+            </p>
+          </div>
+          <a href="#about" className="ml-auto grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink text-white" aria-label="পরিচিতি দেখুন">
+            <ArrowDown className="h-4 w-4" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );
