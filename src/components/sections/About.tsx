@@ -47,7 +47,7 @@ export function About() {
                   {p}
                 </RevealItem>
               ))}
-              <RevealItem className="mt-9 grid gap-3 sm:grid-cols-3">
+              <RevealItem className="mt-9 grid gap-3 sm:grid-cols-2">
                 {about.facts.map((f) => (
                   <div key={f.label} className="rounded-2xl border border-white/80 bg-white/55 px-4 py-4">
                     <p className="text-xs text-ink-soft">{f.label}</p>
@@ -57,12 +57,12 @@ export function About() {
               </RevealItem>
             </Reveal>
 
-            <Reveal delay={0.3} className="relative -mt-8 ml-auto w-[88%] max-w-[420px] md:-mt-10 lg:-mr-2">
+            {about.quote && <Reveal delay={0.3} className="relative -mt-8 ml-auto w-[88%] max-w-[420px] md:-mt-10 lg:-mr-2">
               <RevealItem className="glass rounded-3xl p-6">
                 <Quote className="h-6 w-6 text-accent" />
                 <p className="mt-3 text-lg font-medium leading-relaxed text-ink">{about.quote}</p>
               </RevealItem>
-            </Reveal>
+            </Reveal>}
           </motion.div>
         </div>
       </div>

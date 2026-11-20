@@ -11,18 +11,18 @@
  */
 
 export const doctor = {
-  name: "ডা. [ডাক্তারের নাম]",
-  nameEn: "Dr. [Doctor's Name]",
+  name: "ডা. মোঃ সোহানুর রহমান",
+  nameEn: "Dr. Md. Sohanur Rahman",
   title: "Medical Oncologist",
   /** e.g. "MBBS, FCPS (Medicine), MD (Oncology)" — leave empty until verified. */
-  degrees: "[ডিগ্রি ও যোগ্যতা]",
+  degrees: "MBBS, MD (Medical Oncology)",
   /** Real hospital / chamber name. */
-  affiliation: "[হাসপাতাল / চেম্বারের নাম]",
+  affiliation: "SMSS Cancer Centre",
   /** Path under /public, e.g. "/doctor.jpg" (portrait, ~4:5). null → illustrated placeholder. */
   portrait: "/doctor.webp" as string | null,
   phone: "[ফোন নম্বর]",
   email: "[ইমেইল]",
-  address: "[চেম্বারের ঠিকানা]",
+  address: "বগুড়া",
   hours: "[সাক্ষাতের সময়]",
 };
 
@@ -58,16 +58,16 @@ export const about = {
   kicker: "পরিচিতি",
   title: ["রোগ নয়,", "মানুষকে কেন্দ্র করে", "চিকিৎসা"],
   body: [
-    "[এখানে ডাক্তারের সংক্ষিপ্ত পরিচিতি লিখুন — প্রশিক্ষণ, বর্তমান কর্মস্থল ও চিকিৎসা-দর্শন। শুধুমাত্র যাচাইযোগ্য তথ্য ব্যবহার করুন।]",
+    "ডা. মোঃ সোহানুর রহমান একজন Medical Oncologist। তিনি MBBS ও Medical Oncology-তে MD ডিগ্রিধারী এবং বগুড়ার SMSS Cancer Centre-এ ক্যান্সার রোগীদের চিকিৎসা দিচ্ছেন।",
     "Medical Oncology হলো ক্যান্সারের ওষুধভিত্তিক চিকিৎসার শাখা — যেমন Chemotherapy, Targeted Therapy, Immunotherapy ও Hormonal Therapy। Surgeon ও Radiation Oncologist-এর সঙ্গে সমন্বয় করে পুরো চিকিৎসাযাত্রা পরিচালনা করা এর মূল দায়িত্ব।",
   ],
   /** Credential slots — fill with real, verifiable facts only. */
   facts: [
-    { label: "যোগ্যতা", value: "[ডিগ্রি]" },
-    { label: "কর্মস্থল", value: "[হাসপাতাল]" },
-    { label: "Professional Membership", value: "[সংগঠন]" },
+    { label: "যোগ্যতা", value: "MBBS, MD (Medical Oncology)" },
+    { label: "কর্মস্থল", value: "SMSS Cancer Centre, বগুড়া" },
   ],
-  quote: "“[ডাক্তারের নিজের ভাষায় একটি উক্তি]”",
+  /** Optional — the doctor's own words. Leave empty to hide the quote card. */
+  quote: "",
 };
 
 export type ModelKind = "dna" | "cell" | "antibody" | "molecule";

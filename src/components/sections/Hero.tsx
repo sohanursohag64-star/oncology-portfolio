@@ -147,7 +147,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, delay: 1.1, ease }}
-          className="glass absolute bottom-8 right-[calc(340px+4.5rem)] z-20 hidden w-[260px] rounded-3xl p-5 xl:block"
+          className="glass absolute bottom-8 right-[calc(360px+4.5rem)] z-20 hidden w-[260px] rounded-3xl p-5 xl:block"
         >
           <span className="grid h-9 w-9 place-items-center rounded-2xl bg-gradient-to-br from-accent to-primary text-white">
             <Sparkles className="h-4 w-4" />
@@ -160,12 +160,13 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, delay: 1.25, ease }}
-          className="glass absolute bottom-4 left-4 right-4 z-20 flex items-center gap-4 rounded-3xl px-5 py-4 sm:left-auto sm:right-6 sm:w-[340px] lg:bottom-8 lg:right-10"
+          className="glass absolute bottom-4 left-4 right-4 z-20 flex items-center gap-4 rounded-3xl px-5 py-4 sm:left-auto sm:right-6 sm:w-[360px] lg:bottom-8 lg:right-10"
         >
           <div className="min-w-0">
             <p className="truncate text-[17px] font-semibold text-ink">{doctor.name}</p>
-            <p className="truncate text-[13px] text-ink-soft">
-              <span className="font-en">{doctor.title}</span> · {doctor.degrees}
+            <p className="font-en text-[13px] text-ink-soft">{doctor.degrees}</p>
+            <p className="font-en text-[13px] text-primary">
+              {doctor.affiliation}, Bogura
             </p>
           </div>
           <a href="#about" className="ml-auto grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ink text-white" aria-label="পরিচিতি দেখুন">
